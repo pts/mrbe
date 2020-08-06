@@ -58,4 +58,4 @@ The central repository contains precompiled `.exe` files of free software + open
 ### Modifications to native Win32
 
 * When `bmr` is run natively on a Win32 host (e.g. Windows 10), and when a Win32 build tool running under `bmr` runs a DOS .exe, then the DOSBox modified by MRBE will be run (instead of NTVDM), connecting standard streams correctly. (It's unclear how hard it is to implement, maybe LoadLibraryA and/or CreateProcess has to be hooked for that only for Win32 build tools running under `bmr`).
-* The C: and T: drives are not available for Win32 build tools running under `bmr`, but some other pathnames will be used instead, making them the current drive and directory (instead of `C:\`), and adding them to the `PATH` (instead of `T:\`).
+* The C: and T: drives are not available for Win32 build tools running under `bmr` running on Win32 natively, but some other pathnames will be used instead, making them the current drive and directory (instead of `C:\`), and adding them to the `PATH` (instead of `T:\`).
