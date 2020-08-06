@@ -9,7 +9,7 @@ MRBE doesn't contain a debugger or an emulator to run the software built, but th
 
 ## Invocation environment
 
-MRBE provides a command-line tool `bmr`, which can be invoked from a terminal (command prompt window) on the host system. There is no GUI. (A terminal emulator may be provided in the future, but as of now any of the native terminals are used on Linux and macOS, and the mative black console window (in which cmd.exe also runs) is used on Windows.)
+MRBE provides a command-line tool `bmr`, which can be invoked from a terminal (command prompt window) on the host system. There is no GUI. A terminal emulator may be provided in the future, but as of now any of the native terminals are used on Linux and macOS, and the native black console window (in which cmd.exe also runs) is used on Windows.
 
 `bmr` accepts some command-line flags and environment variables, and it also accepts standard input (can be redirected). It writes to standard output and standard error (both can be redirected). These standard streams are not binary-safe (not even when redirected), but ASCII text goes through with possibly some LF <-> CRLF translation. (In a future version, the standard streams will be binary-safe if redirected to a file or pipe.) It's strongly recommended to run build tools in non-interactive mode, i.e. by specifying input and output files in command-line arguments rather than typing them interactively &ndash; however, limited interactive use (ASCII only, without colors or cursor positioning) is also supported.
 
