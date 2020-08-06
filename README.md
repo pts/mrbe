@@ -32,7 +32,7 @@ The central repository contains precompiled `.exe` files of free software + open
 
 * For Win32, a patched build of DOSBox >= 0.74-3 is provided (as `mrbe_dosbox.exe` and some config files).
 
-* For Linux i386 and amd64 (and for macOS with Docker), a patched build of DOSBox >= 0.74-3 and Wine >= 5.0 are provided, as statically linked Linux ELF i386 executables. 
+* For Linux i386 and amd64 (and for macOS with Docker), a patched build of DOSBox >= 0.74-3 and Wine >= 5.0 are provided, as statically linked Linux ELF i386 executables.
 
 ### Modifications to DOSBox
 
@@ -59,3 +59,32 @@ The central repository contains precompiled `.exe` files of free software + open
 
 * When `bmr` is run natively on a Win32 host (e.g. Windows 10), and when a Win32 build tool running under `bmr` runs a DOS .exe, then the DOSBox modified by MRBE will be run (instead of NTVDM), connecting standard streams correctly. (It's unclear how hard it is to implement, maybe LoadLibraryA and/or CreateProcess has to be hooked for that only for Win32 build tools running under `bmr`).
 * The C: and T: drives are not available for Win32 build tools running under `bmr` running on a Win32 host natively, but some other pathnames will be used instead, making them the current drive and directory (instead of `C:\`), and adding them to the `PATH` (instead of `T:\`).
+
+## Build tools that will work
+
+* OpenWatcom V2 C/C++ compiler (and WLINK linker and WASM assembler etc.), also the Fortran compiler
+* OpenWatcom V2 WMAKE (incremental build tool) and other tools (e.g. dmpobj, WDIS disassebler)
+* TCC C compiler targeting Win32
+* Turbo Pascal 7.0 compiler, also the Borland Pascal 7.0 compiler
+* NASM assembler
+* YASM assembler
+* A86 assembler
+* TASM assembler with TLINK linker
+* TASM32 assebler with TLINK or TLINK32 linker
+* MASM assembler and the corresponding linker, various versions from 3.01, 6.14 etc.
+* LZASM assembler
+* NBASM assembler (both the DOS and the Win32 version)
+* Wolfware Assembler
+* FASM assembler
+* FASMARM assembler (with ARM target)
+* JWasm assembler
+* GoAsm assembler and GoLink linker
+* Poasm assembler and Polink linker
+* Solar Assembler
+* JWlink liner
+* ALINK linker
+* OPTLINK linker
+* VAL linker
+* Sphinx C-- Compiler
+* BassPasC (BAPC) v2 and v3 compiler
+* (Probably many others, Wine can run many Win32 build tools, DOSBox can run many DOS build tools.)
