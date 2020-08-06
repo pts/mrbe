@@ -6,7 +6,6 @@ The goal of MRBE is to make it possible to rebuild and modify PC (with processor
 
 MRBE doesn't contain a debugger or an emulator to run the software built, but those are easily available elsewhere, e.g. unmodified DOSBox, Wine or QEMU. If the software executable built happens to be compatible with the MRBE inner environemnt (i.e. it's a text-mode, noninteractive DOS program or a Win32 console application), then MRBE can run it, even as part of the current invocation.
 
-
 ## Invocation environment
 
 MRBE provides a command-line tool `bmr`, which can be invoked from a terminal (command prompt window) on the host system. There is no GUI. A terminal emulator may be provided in the future, but as of now any of the native terminals are used on Linux and macOS, and the native black console window (in which cmd.exe also runs) is used on Windows.
@@ -17,6 +16,8 @@ Build tools running inside `bmr` (i.e. in the inner MRBE environment) must be ei
 
 Build tools can run each other within a single `bmr` invocation. A Win32 console application can run another Win32 console application or a DOS program. A DOS program can run another DOS program (but not a Win32 application).
 
+MRBE shouldn't be used as a security barrier between the host system and the build tools. When running a Win32 console application under `bmr` running on a Win32 host natively, the build too can see and modify all data and all drives the host user has access to. On Linux and macOS a little better isolation is provided: build tools running under `mrbe` can see only the host directories hosting drive C: (read-write) and T: (read-only).
+
 ## Software distribution
 
 MRBE can be easily downloaded (on any Windows, Linux or macOS system with architecture i386 or amd64) by running a few commands and waiting for the download to finish. The `bmr` tool is available right after download, there is no need to do any installation. Adding the `bmr` tool to the `PATH` for convenience is optional. MRBE doesn't leave any files, directories (or other artifacts) on the host system outside the directory it was downloaded to. So when the user has finished using MRBE, they can uninstall it by deleting the MRBE directory. MRBE doesn't need administrator (root, superuser) privileges to install or run. On macOS, Docker has to be installed first manually (and that typically needs administrator privileges).
@@ -24,7 +25,6 @@ MRBE can be easily downloaded (on any Windows, Linux or macOS system with archit
 MRBE comes with some free build tools (see above which) preinstalled to the directory backing the T: drive. The `mrbeget` command-line tool is also provided for convenient, single-command downloading of more build tools, e.g. `mrbeget lzasm` will download the LZASM assembler and put `lzasm.exe` to the directory backing the T: drive, so that it will work when `bmr lzasm ...` is executed. Binaries of free-to-use build tools are hosted in a central repository used by `mrbeget`. Other build tools (e.g. proprietary ones) can be copied manually to the directory backing the T: drive (or even to the C: drive). There is no version management, e.g. if multiple versions of NASM are available in the central repository, then `nasm.exe` used by `bmr nasm ...` will be the one which was installed or copied last. Subsequent installs with `mrbeget` may overwrite previous files, on which `mrbeget` aborts unless the `--overwrite` command-line flag was specified.
 
 The central repository contains precompiled `.exe` files of free software + open source build tools (e.g. the NASM assembler), and it also contains the `.exe` files of some free-to-use, but maybe not free software or orpen source build tools (e.g. the A86 assembler and the LZASM assembler). Proprietiary build tools (e.g. Turbo Pascal 7.0 compiler) are not available in the central repository, but some documentation may be provided on using them within MRBE after obtaining them from other sources.
-
 
 ## Custom software
 
@@ -58,4 +58,4 @@ The central repository contains precompiled `.exe` files of free software + open
 ### Modifications to native Win32
 
 * When `bmr` is run natively on a Win32 host (e.g. Windows 10), and when a Win32 build tool running under `bmr` runs a DOS .exe, then the DOSBox modified by MRBE will be run (instead of NTVDM), connecting standard streams correctly. (It's unclear how hard it is to implement, maybe LoadLibraryA and/or CreateProcess has to be hooked for that only for Win32 build tools running under `bmr`).
-* The C: and T: drives are not available for Win32 build tools running under `bmr` running on Win32 natively, but some other pathnames will be used instead, making them the current drive and directory (instead of `C:\`), and adding them to the `PATH` (instead of `T:\`).
+* The C: and T: drives are not available for Win32 build tools running under `bmr` running on a Win32 host natively, but some other pathnames will be used instead, making them the current drive and directory (instead of `C:\`), and adding them to the `PATH` (instead of `T:\`).
