@@ -16,7 +16,7 @@ Build tools running inside `bmr` (i.e. in the inner MRBE environment) must be ei
 
 Build tools can run each other within a single `bmr` invocation. A Win32 console application can run another Win32 console application or a DOS program. A DOS program can run another DOS program (but not a Win32 application).
 
-MRBE shouldn't be used as a security barrier between the host system and the build tools. When running a Win32 console application under `bmr` running on a Win32 host natively, the build too can see and modify all data and all drives the host user has access to. On Linux and macOS a little better isolation is provided: build tools running under `mrbe` can see only the host directories hosting drive C: (read-write) and T: (read-only).
+MRBE shouldn't be used as a security barrier between the host system and the build tools. When running a Win32 console application under `bmr` running on a Win32 host natively, the build too can see and modify all data and all drives the host user has access to. On Linux and macOS a little better isolation is provided: build tools running under `mrbe` can see only the host directories hosting drive C: (read-write) and T: (read-only). Even DOS build tools aren't sufficiently isolated from the host system, because DOSBox can crash or a malicious DOS program can escape by corrupting DOSBox memory.
 
 ## Software distribution
 
