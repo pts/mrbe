@@ -63,14 +63,14 @@ The central repository contains precompiled `.exe` files of free software + open
 ## Build tools that will work
 
 * OpenWatcom V2 C/C++ compiler (and WLINK linker and WASM assembler etc.), also the Fortran compiler
-* OpenWatcom V2 WMAKE (incremental build tool) and other tools (e.g. dmpobj, WDIS disassebler)
+* OpenWatcom V2 WMAKE (incremental build tool) and other tools (e.g. dmpobj, WDIS disassembler)
 * TCC C compiler targeting Win32
 * Turbo Pascal 7.0 compiler, also the Borland Pascal 7.0 compiler
 * NASM assembler
 * YASM assembler
 * A86 assembler
 * TASM assembler with TLINK linker
-* TASM32 assebler with TLINK or TLINK32 linker
+* TASM32 assembler with TLINK or TLINK32 linker
 * MASM assembler and the corresponding linker, various versions from 3.01, 6.14 etc.
 * LZASM assembler
 * NBASM assembler (both the DOS and the Win32 version)
