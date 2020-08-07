@@ -1,10 +1,10 @@
 # Modern Retro Build Environment (MRBE)
 
-This is the design document for Modern Retro Build Environment, which (when implemented) can run modern and retro build tools on modern host systems. Build tools include assemblers, compilers, compressors, make (incremental build) tools (.mak), script interpreters (.bat, .cmd etc.) written for DOS (16-bit and 32-bit) and for Win32. Modern host systems are modern Windows (i386 or amd64 only, e.g. Windows 10 and some earlier versions of Windows, possibly also ReactOS), Linux (i386 and amd64 only), macOS (i386 and amd64 only, build tools running within Docker). MRBE comes with many free build tools preinstalled (e.g. OpenWatcom V2 C/C++ compiler and linker, WMAKE, TCC C compiler, NASM assembler), and it can also run some popular free-to-use and proprietary build tools (e.g. TASM32 assembler, TLINK32 linker, TLINK linker, Turbo Pascal compiler, LZASM assembler, MASM32 assembler, A86 assembler).
+This is the design document for Modern Retro Build Environment, which (when implemented) can run modern and retro build tools on modern host systems. Build tools include assemblers, compilers, compressors, make (incremental build) tools (.mak), script interpreters (.bat, .cmd etc.) written for DOS (16-bit and 32-bit) and for Win32. Modern host systems are modern Windows (i386 or amd64 only, e.g. Windows 10 and some earlier versions of Windows, possibly also ReactOS), Linux (i386 and amd64 only), macOS (i386 and amd64 only, build tools running within Docker). MRBE comes with many free build tools preinstalled (e.g. OpenWatcom V2R C/C++ compiler and linker, WMAKE, TCC C compiler, NASM assembler), and it can also run some popular free-to-use and proprietary build tools (e.g. TASM32 assembler, TLINK32 linker, TLINK linker, Turbo Pascal compiler, LZASM assembler, MASM32 assembler, A86 assembler).
 
 The goal of MRBE is to make it possible to rebuild and modify PC (with processors 8086 ... i386 ... Pentium...) software for DOS, Win16 and Win32. Typically such software was originally designed and implemented between 1985 and 1999, for DOS 3.0 .. 6.22, Windows 3.x, Windows 95, Windows NT 3.1 &ndash; Windows 2000. MRBE makes it convenient to rebuild such software on a modern host system, either the original software or with minor modifications. MRBE also facilitates reproducible builds.
 
-MRBE doesn't contain a debugger or an emulator to run the software built, but those are easily available elsewhere, e.g. unmodified DOSBox, Wine or QEMU. If the software executable built happens to be compatible with the MRBE inner environemnt (i.e. it's a text-mode, noninteractive DOS program or a Win32 console application), then MRBE can run it, even as part of the current invocation.
+MRBE doesn't contain a debugger or an emulator to run the software built, but those are easily available elsewhere, e.g. unmodified DOSBox, Wine or QEMU. If the software executable built happens to be compatible with the MRBE inner environemnt (i.e. it's a text-mode, non-interactive DOS program or a Win32 console application), then MRBE can run it, even as part of the current invocation.
 
 ## Invocation environment
 
@@ -24,7 +24,7 @@ MRBE can be easily downloaded (on any Windows, Linux or macOS system with archit
 
 MRBE comes with some free build tools (see above which) preinstalled to the directory backing the T: drive. The `mrbeget` command-line tool is also provided for convenient, single-command downloading of more build tools, e.g. `mrbeget lzasm` will download the LZASM assembler and put `lzasm.exe` to the directory backing the T: drive, so that it will work when `bmr lzasm ...` is executed. Binaries of free-to-use build tools are hosted in a central repository used by `mrbeget`. Other build tools (e.g. proprietary ones) can be copied manually to the directory backing the T: drive (or even to the C: drive). There is no version management, e.g. if multiple versions of NASM are available in the central repository, then `nasm.exe` used by `bmr nasm ...` will be the one which was installed or copied last. Subsequent installs with `mrbeget` may overwrite previous files, on which `mrbeget` aborts unless the `--overwrite` command-line flag was specified.
 
-The central repository contains precompiled `.exe` files of free software + open source build tools (e.g. the NASM assembler), and it also contains the `.exe` files of some free-to-use, but maybe not free software or orpen source build tools (e.g. the A86 assembler and the LZASM assembler). Proprietiary build tools (e.g. Turbo Pascal 7.0 compiler) are not available in the central repository, but some documentation may be provided on using them within MRBE after obtaining them from other sources.
+The central repository contains precompiled `.exe` files of free software + open source build tools (e.g. the NASM assembler), and it also contains the `.exe` files of some free-to-use, but maybe not free software or open source build tools (e.g. the A86 assembler and the LZASM assembler). Proprietiary build tools (e.g. Turbo Pascal 7.0 compiler) are not available in the central repository, but some documentation may be provided on using them within MRBE after obtaining them from other sources.
 
 ## Custom software
 
@@ -42,7 +42,7 @@ The central repository contains precompiled `.exe` files of free software + open
 * Most hardware drivers (e.g. sound card, mouse) are removed.
 * In the future, a driver for long filenames may be added.
 * Startup is modified to mount the drives C: and T:.
-* Some small changes are mode to reduce startup time even more.
+* Some small changes are made to reduce startup time even more.
 
 ### Modifications to Wine
 
