@@ -2,9 +2,21 @@
 
 This is the design document for Modern Retro Build Environment, which (when implemented) can run modern and retro build tools on modern host systems. Build tools include assemblers, compilers, compressors, make (incremental build) tools (.mak), script interpreters (.bat, .cmd etc.) written for DOS (16-bit and 32-bit) and for Win32. Modern host systems are modern Windows (i386 or amd64 only, e.g. Windows 10 and some earlier versions of Windows, possibly also ReactOS), Linux (i386 and amd64 only), macOS (i386 and amd64 only, build tools running within Docker). MRBE comes with many free build tools preinstalled (e.g. OpenWatcom V2R C/C++ compiler and linker, WMAKE, TCC C compiler, NASM assembler), and it can also run some popular free-to-use and proprietary build tools (e.g. TASM32 assembler, TLINK32 linker, TLINK linker, Turbo Pascal compiler, LZASM assembler, MASM32 assembler, A86 assembler).
 
-The goal of MRBE is to make it possible to rebuild and modify PC (with processors 8086 ... i386 ... Pentium...) software for DOS, Win16 and Win32. Typically such software was originally designed and implemented between 1985 and 1999, for DOS 3.0 .. 6.22, Windows 3.x, Windows 95, Windows NT 3.1 &ndash; Windows 2000. MRBE makes it convenient to rebuild such software on a modern host system, either the original software or with minor modifications. MRBE also facilitates reproducible builds.
+The goal of MRBE is to make it possible to rebuild and modify PC (with processors 8086 ... i386 ... Pentium...) software for DOS, Win16 and Win32. Typically such software was originally designed and implemented between 1985 and 1999, for DOS 3.0 .. 6.22, Windows 3.x, Windows 95, Windows NT 3.1 &ndash; Windows 2000. MRBE makes it convenient to rebuild such software on a modern host system, either the original software or with minor modifications, with the original (retro) build tools (but some modern build tools are also easily available within MRBE). MRBE also facilitates reproducible builds.
 
-MRBE doesn't contain a debugger or an emulator to run the software built, but those are easily available elsewhere, e.g. unmodified DOSBox, Wine or QEMU. If the software executable built happens to be compatible with the MRBE inner environemnt (i.e. it's a text-mode, non-interactive DOS program or a Win32 console application), then MRBE can run it, even as part of the current invocation.
+MRBE doesn't contain a debugger or an emulator to run the software built, but those are easily available elsewhere, e.g. unmodified DOSBox, Wine or QEMU. If the software executable built happens to be compatible with the MRBE inner environment (i.e. it's a text-mode, non-interactive DOS program or a Win32 console application), then MRBE can run it (so there is no need for an additional emulator), even as part of the current invocation.
+
+For software builds, MRBE provides the following benefits over direct use of emulators (virtual machines):
+
+* Quick installation (less than a minute). No need to install virtual machines and guest operating systems within a virtual machine. Such an installation could take hours, and include frustrating experimentation with emulator settings, until it finally works. Wine is easier to install (because there is no separate step for guest operating system installation), but it also needs some configuration. In contrast, MRBE comes with Wine ready to use (preinstalled and preconfigured).
+* Reproducible operation. It's very easy to archive the build files (e.g. source files and files built from them) and share them with others. Work on the build can continue on another host system, without the system transition breaking it.
+* High performance. Win32 build tools run at almost native speed. (For implementation reasons, DOS build tools run slower than native in the initial design because of the architecture and emulation speed of DOSBox.)
+* Reasonable defaults. No need to create config files or to specify long emulator command-line flags.
+* No need to manually stop the emulator as soon as the build has finished.
+* Quick startup and shutdown time. It's possible to run many small builds in less than a second each.
+* Parallel operation. Multiple builds can be run in parallel on the same host system.
+* Convenient read-write sharding of files and directories between the host system and the MRBE inner environment (where the build tools run).
+* More convenient environment variable and standard stream (standard input, standard output and standard error) propagation.
 
 ## Invocation environment
 
@@ -14,7 +26,7 @@ In the command-line `bmr` expects the name of the build tool (usually and .exe f
 
 Build tools running inside `bmr` (i.e. in the inner MRBE environment) must be either Win32 console applications (and they see a Win32 environment, possibly emulated with stripped-down Wine 5.0 or later) or text-mode DOS programs (and they see DOS environment emulated with a stripped-down DOSBox 0.74-3 or later, with the actual screen hidden, and the user sees only their standard output and error). For both kinds of build tools, host system files in the current directory where `bmr` was invoked is available (for read-write) as a virtual C: drive. Also, for build tools, the directory specified in the `BMRTOOLDIR` environment variable is available for read-only as a virtual T: drive, and is added to the `PATH`. Filenames are case-insensitive from the build tools' perspective. In case of DOSBox, long filenames (longer than 8.3 or containing whitespace) are supported in Win32, but not in DOSBox. Filenames with non-ASCII characters are not supported. In case of DOSBox, modification to the directory backing the C: drive while `bmr` is running may not be visible to the build tools. In case of Win32 build tools, all file and directory changes propagate instantly between the host system and the build tools. For imlementation reasons, if `bmr` is running on a Win32 host system natively, the C: and T: drives (as described above) are not available for Win32 build tools running under `bmr`, but some other pathnames will be used instead, making them the current drive and directory (instead of `C:\`), and adding them to the `PATH` (instead of `T:\`).
 
-Build tools can run each other within a single `bmr` invocation. A Win32 console application can run another Win32 console application or a DOS program. A DOS program can run another DOS program (but not a Win32 application).
+Build tools can run each other within a single `bmr` invocation. A Win32 console application can run another Win32 console application or a DOS program. A DOS program can run another DOS program (but not a Win32 application). Most environment variables propagate between build tools (even if a Win32 console application runs a DOS program); one exceptions is parts of `PATH` which don't exist in the other rmulator.
 
 MRBE shouldn't be used as a security barrier between the host system and the build tools. When running a Win32 console application under `bmr` running on a Win32 host natively, the build too can see and modify all data and all drives the host user has access to. On Linux and macOS a little better isolation is provided: build tools running under `mrbe` can see only the host directories hosting drive C: (read-write) and T: (read-only). Even DOS build tools aren't sufficiently isolated from the host system, because DOSBox can crash or a malicious DOS program can escape by corrupting DOSBox memory.
 
@@ -43,6 +55,7 @@ The central repository contains precompiled `.exe` files of free software + open
 * In the future, a driver for long filenames may be added.
 * Startup is modified to mount the drives C: and T:.
 * Some small changes are made to reduce startup time even more.
+* Run at maximum available CPU speed by default.
 
 ### Modifications to Wine
 
